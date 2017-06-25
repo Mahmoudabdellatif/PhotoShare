@@ -1,0 +1,35 @@
+<div class="post">
+	<div class="post-head">
+		<div class="thumb-img"></div>
+		<div class="name">
+			<%= post.user.user_name %>
+			<div class="time-ago">
+  				<%= time_ago_in_words post.created_at %>
+			</div>
+		</div>
+	</div>
+	<div class="image center-block">
+			<%= link_to (image_tag post.image.url(:medium), class:'img-responsive'), post_path(post) %>
+	</div>
+	<div class="caption">
+	    <div class="caption-content" style="margin-left: 10px;">
+	      <%= post.caption %>
+	    </div>
+	</div>
+	<div class="post-bottom">
+	  <div class="comments" style="border-top: 1px solid #EEEFEF;" id="comments_<%= post.id %>">
+	    <% if post.comments %>
+	      <%= render post.comments, post: post %>
+	    <% end %>
+	  </div>
+	  <% if user_signed_in? %>
+		<div class="comment-like-form row">
+			<div class="comment-form col-sm-11">
+			    <%= form_for([post, post.comments.build], remote: true) do |f| %>
+			      <%= f.text_field :content, placeholder: 'Add a comment...', class: "comment_content", id: "comment_content_#{post.id}" %>
+			    <% end %>
+			</div>
+		</div>
+	  <% end %>
+	</div>
+</div>
